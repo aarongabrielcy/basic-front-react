@@ -2,13 +2,33 @@ import * as React from "react";
 import { Box } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Profile } from "./UserProfile";
+import { Logo } from "../components/Logo";
+import { Link } from "react-router-dom";
+
+
+type SidebarContextType = {
+  isCollapse: boolean;
+  toggleSidebar: () => void;
+  textColor: string;
+  width: string;
+  collapsewidth: string;
+  themeColor: string;
+};
+
+export const SidebarContext = React.createContext<SidebarContextType>({
+  isCollapse: false,
+  toggleSidebar: () => {},
+  textColor: "#000",
+  width: "260px",
+  collapsewidth: "80px",
+  themeColor: "#5d87ff",
+});
 
 type SidebarProps = {
   children: React.ReactNode;
   width?: string;
   collapsewidth?: string;
   textColor?: string;
-  isCollapse?: boolean;
   themeColor?: string;
   themeSecondaryColor?: string;
   mode?: "light" | "dark";
@@ -20,14 +40,6 @@ type SidebarProps = {
   onLogout?: () => void;
 };
 
-export const SidebarContext = React.createContext({
-  width: "270px",
-  collapsewidth: "80px",
-  textColor: "#8D939D",
-  isCollapse: false,
-  themeColor: "#5d87ff",
-});
-
 let handleLogout = () => {
   alert("Logout Successfully");
 };
@@ -37,7 +49,6 @@ const Sidebar = ({
   width = "260px",
   collapsewidth = "80px",
   textColor = "#2b2b2b",
-  isCollapse = false,
   themeColor = "#5d87ff",
   themeSecondaryColor = "#49beff",
   mode = "light",
@@ -48,9 +59,14 @@ const Sidebar = ({
   userimg = "https://bootstrapdemos.adminmart.com/modernize/dist/assets/images/profile/user-1.jpg",
   onLogout = handleLogout,
 }: SidebarProps) => {
-  const [isSidebarHover, _setIsSidebarHover] = React.useState(false);
-  const toggleWidth = isCollapse && !isSidebarHover ? collapsewidth : width;
-  // const theme = useTheme();
+  const [isCollapse, setIsCollapse] = React.useState(false);
+
+  const toggleSidebar = () => {
+    setIsCollapse((prev) => !prev);
+  };
+
+  const toggleWidth = isCollapse ? collapsewidth! : width;
+
   const myTheme = createTheme({
     direction: direction,
     palette: {
@@ -65,9 +81,7 @@ const Sidebar = ({
     },
   });
 
-  if (mode === "dark") {
-    textColor = "rgba(255,255,255, 0.9)";
-  }
+  const effectiveTextColor = mode === "dark" ? "rgba(255,255,255, 0.9)" : textColor;
 
   return (
     <ThemeProvider theme={myTheme}>
@@ -77,16 +91,35 @@ const Sidebar = ({
           width: toggleWidth,
           flexShrink: 0,
           fontFamily: "inherit",
-          color: textColor,
+          color: effectiveTextColor,
+          transition: "width 0.3s ease",
+          height: "100vh",
+          overflowX: "hidden",
+          backgroundColor: "  #eaedeeff",
+          borderRight: "1px solid #ddd",
+          position: "fixed",
+          top:60,
+          left: 0,
         }}
       >
-        <Box sx={{ width: toggleWidth }}>
-          <SidebarContext.Provider
-            value={{ textColor, isCollapse, width, collapsewidth, themeColor }}
-          >
-            {children}
-          </SidebarContext.Provider>
-          {showProfile ? (
+        <SidebarContext.Provider
+          value={{
+            isCollapse,
+            toggleSidebar,
+            textColor: effectiveTextColor!,
+            width,
+            collapsewidth: collapsewidth!,
+            themeColor,
+          }}
+        >
+          <Logo
+          component={Link}
+          href="/"
+          img="https://adminmart.com/wp-content/uploads/2024/03/logo-admin-mart-news.png"
+        >
+          AdminMart 
+        </Logo>
+        {showProfile ? (
             <Profile
               userName={userName}
               designation={designation}
@@ -95,7 +128,8 @@ const Sidebar = ({
               onLogout={onLogout}
             />
           ) : null}
-        </Box>
+          {children}
+        </SidebarContext.Provider>
       </Box>
     </ThemeProvider>
   );

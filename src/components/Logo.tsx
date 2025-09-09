@@ -25,8 +25,7 @@ const Logo = ({
     overflow: customizer.isCollapse ? "hidden" : "visible",
     WebkitLineClamp: "1",
     display: "block",
-
-    padding: "15px 22px",
+    padding: "15px 24px",
     textOverflow: "ellipsis",
   }));
 

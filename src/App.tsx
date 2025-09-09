@@ -1,63 +1,94 @@
 import "./App.css";
 import { Sidebar } from "./components/Sidebar";
-import { Logo } from "./components/Logo";
 import { Menu } from "./components/Menu";
 import { MenuItem } from "./components/MenuItem";
 import { Submenu } from "./components/Submenu";
-import AccessAlarms from "@mui/icons-material/AccessAlarms";
+import ShareLocationIcon from '@mui/icons-material/ShareLocation';
 import CottageOutlinedIcon from "@mui/icons-material/CottageOutlined";
+import ContentPasteGoIcon from '@mui/icons-material/ContentPasteGo';
+import ScreenSearchDesktopIcon from '@mui/icons-material/ScreenSearchDesktop';
+import WaterfallChartIcon from '@mui/icons-material/WaterfallChart';
+import DatasetLinkedIcon from '@mui/icons-material/DatasetLinked';
+import DevicesOtherIcon from '@mui/icons-material/DevicesOther';
+import SimCardIcon from '@mui/icons-material/SimCard';
+import DevicesIcon from '@mui/icons-material/Devices';
+import DriveEtaIcon from '@mui/icons-material/DriveEta';
+import PushPinIcon from '@mui/icons-material/PushPin';
 import { Link, BrowserRouter } from "react-router-dom";
+import { ButtonAppBar } from "./components/ButtonAppBar";
+import { Box } from "@mui/material";
 
 function App() {
   return (
     <BrowserRouter>
       <Sidebar width={"270px"}>
-        <Logo
-          component={Link}
-          href="/"
-          img="https://adminmart.com/wp-content/uploads/2024/03/logo-admin-mart-news.png"
-        >
-          AdminMart
-        </Logo>
-        <Menu subHeading="HOME">
+        {/* La AppBar se comunica con SidebarContext */}
+        <ButtonAppBar />
+        <Menu subHeading="TRACKINGS">
           <MenuItem
-            icon={<CottageOutlinedIcon />}
+            icon={<ShareLocationIcon />}
             component={Link}
             link="/tes"
             badge={true}
-            isSelected={true}
           >
-            {" "}
-            {/* Set badge to boolean true */}
-            Modern
+            Locate
           </MenuItem>
-          <MenuItem icon={<AccessAlarms />} component={Link} link="/test">
-            eCommerce
+          <MenuItem icon={<PushPinIcon />}
+                    component={Link} link="/test">
+            Geofences
           </MenuItem>
-          <MenuItem component={Link} link="/ana">
+          <MenuItem 
+            icon={<CottageOutlinedIcon />}
+            component={Link}
+            link="/ana">
             Analytical
           </MenuItem>
         </Menu>
-        <Menu subHeading="APPS">
-          <MenuItem>Chat</MenuItem>
-          <MenuItem>Calendar</MenuItem>
+
+        <Menu subHeading="REPORTS">
+          <MenuItem
+            icon={<ScreenSearchDesktopIcon />}
+          >
+            Raw data
+          </MenuItem>
+          <MenuItem
+            icon={<ContentPasteGoIcon />}
+          >All reports</MenuItem>
         </Menu>
-        <Menu subHeading="OTHERS">
-          <Submenu title="Menu Level">
-            <MenuItem>Post</MenuItem>
-            <MenuItem>Details</MenuItem>
-            <Submenu title="Level 2">
-              <MenuItem>new</MenuItem>
-              <MenuItem>Hello</MenuItem>
+
+        <Menu subHeading="DASHBOARD">
+          <Submenu 
+          icon={<DevicesIcon/>}
+            title="Entities">
+            <MenuItem
+              icon={<DriveEtaIcon/>}
+            >Vehucles</MenuItem>
+            <MenuItem
+              icon={<DevicesOtherIcon />}
+            >Devices</MenuItem>
+            <Submenu
+              icon={< SimCardIcon/>}
+              title="SIMs">
+              <MenuItem>Telcel</MenuItem>
+              <MenuItem>ATT</MenuItem>
             </Submenu>
           </Submenu>
-
-          <MenuItem>Chip</MenuItem>
-          <MenuItem target="_blank" component={Link} link="https://google.com">
+          <MenuItem
+            icon={<WaterfallChartIcon />}
+          >Metrics</MenuItem>
+          <MenuItem
+            icon={<DatasetLinkedIcon />} 
+            target="_blank" component={Link} link="https://google.com">
             External Link
           </MenuItem>
         </Menu>
       </Sidebar>
+
+      {/* Contenido principal */}
+      <Box component="main" sx={{ flexGrow: 1, p: 3, ml: "270px", mt: 8 }}>
+        <h2>Dashboard</h2>
+        <p>Aquí va el contenido de tu aplicación.</p>
+      </Box>
     </BrowserRouter>
   );
 }
