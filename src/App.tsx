@@ -17,18 +17,19 @@ import PushPinIcon from '@mui/icons-material/PushPin';
 import { Link, BrowserRouter } from "react-router-dom";
 import { ButtonAppBar } from "./components/ButtonAppBar";
 import { Box } from "@mui/material";
+import AppRoutes from "./app/routes";
 
-function App() {
+function AppLayout() {
   return (
-    <BrowserRouter>
+    <>
+    <ButtonAppBar />
       <Sidebar width={"270px"}>
         {/* La AppBar se comunica con SidebarContext */}
-        <ButtonAppBar />
         <Menu subHeading="TRACKINGS">
           <MenuItem
             icon={<ShareLocationIcon />}
             component={Link}
-            link="/tes"
+            link="/profile"
             badge={true}
           >
             Locate
@@ -44,7 +45,6 @@ function App() {
             Analytical
           </MenuItem>
         </Menu>
-
         <Menu subHeading="REPORTS">
           <MenuItem
             icon={<ScreenSearchDesktopIcon />}
@@ -55,7 +55,6 @@ function App() {
             icon={<ContentPasteGoIcon />}
           >All reports</MenuItem>
         </Menu>
-
         <Menu subHeading="DASHBOARD">
           <Submenu 
           icon={<DevicesIcon/>}
@@ -83,14 +82,18 @@ function App() {
           </MenuItem>
         </Menu>
       </Sidebar>
-
       {/* Contenido principal */}
       <Box component="main" sx={{ flexGrow: 1, p: 3, ml: "270px", mt: 8 }}>
-        <h2>Dashboard</h2>
-        <p>Aquí va el contenido de tu aplicación.</p>
+        <AppRoutes />
       </Box>
-    </BrowserRouter>
+      </>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppLayout />
+    </BrowserRouter>
+  );
+}
