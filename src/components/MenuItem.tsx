@@ -6,7 +6,7 @@ import Chip from "@mui/material/Chip";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import ListItemButton from "@mui/material/ListItemButton";
-import { SidebarContext } from "./Sidebar";
+import { SidebarContext } from "../context/SidebarContext";
 import CircleOutlined from "@mui/icons-material/CircleOutlined";
 import Links from "./Links";
 

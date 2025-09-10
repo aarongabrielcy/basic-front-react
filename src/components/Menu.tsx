@@ -1,8 +1,11 @@
+// src/components/Menu.tsx
 import * as React from "react";
 import ListSubheader from "@mui/material/ListSubheader";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
-import { SidebarContext } from "./Sidebar";
+
+//IMPORTA el contexto para poder usarlo
+import { SidebarContext } from "../context/SidebarContext";
 
 type MenuProps = {
   children: React.ReactNode;
@@ -10,6 +13,7 @@ type MenuProps = {
 };
 
 const Menu = ({ children, subHeading = "menu" }: MenuProps) => {
+  //Usa el contexto importado
   const customizer = React.useContext(SidebarContext);
 
   return (
