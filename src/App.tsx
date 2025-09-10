@@ -1,3 +1,4 @@
+// App.tsx
 import "./App.css";
 import { Sidebar } from "./components/Sidebar";
 import { Menu } from "./components/Menu";
@@ -19,81 +20,90 @@ import { ButtonAppBar } from "./components/ButtonAppBar";
 import { Box } from "@mui/material";
 import AppRoutes from "./app/routes";
 
+// ⬇️ provider + contexto
+import { SidebarProvider, SidebarContext } from "./context/SidebarContext";
+import * as React from "react";
+
 function AppLayout() {
+  // ⬇️ lee también collapsewidth
+  const { open, width, collapsewidth } = React.useContext(SidebarContext);
+
+  // ⬇️ margen a la izquierda según estado (clave de la corrección)
+  const leftMargin = open ? width : collapsewidth;
+
   return (
     <>
-    <ButtonAppBar />
+      <ButtonAppBar />
+
       <Sidebar width={"270px"}>
-        {/* La AppBar se comunica con SidebarContext */}
         <Menu subHeading="TRACKINGS">
-          <MenuItem
-            icon={<ShareLocationIcon />}
-            component={Link}
-            link="/profile"
-            badge={true}
-          >
+          <MenuItem icon={<ShareLocationIcon />} component={Link} link="/profile" badge={true}>
             Locate
           </MenuItem>
-          <MenuItem icon={<PushPinIcon />}
-                    component={Link} link="/test">
+          <MenuItem icon={<PushPinIcon />} component={Link} link="/test">
             Geofences
           </MenuItem>
-          <MenuItem 
-            icon={<CottageOutlinedIcon />}
-            component={Link}
-            link="/ana">
+          <MenuItem icon={<CottageOutlinedIcon />} component={Link} link="/ana">
             Analytical
           </MenuItem>
         </Menu>
+
         <Menu subHeading="REPORTS">
-          <MenuItem
-            icon={<ScreenSearchDesktopIcon />}
-          >
-            Raw data
-          </MenuItem>
-          <MenuItem
-            icon={<ContentPasteGoIcon />}
-          >All reports</MenuItem>
+          <MenuItem icon={<ScreenSearchDesktopIcon />}>Raw data</MenuItem>
+          <MenuItem icon={<ContentPasteGoIcon />}>All reports</MenuItem>
         </Menu>
+
         <Menu subHeading="DASHBOARD">
-          <Submenu 
-          icon={<DevicesIcon/>}
-            title="Entities">
-            <MenuItem
-              icon={<DriveEtaIcon/>}
-            >Vehucles</MenuItem>
-            <MenuItem
-              icon={<DevicesOtherIcon />}
-            >Devices</MenuItem>
-            <Submenu
-              icon={< SimCardIcon/>}
-              title="SIMs">
+          <Submenu icon={<DevicesIcon/>} title="Entities">
+            <MenuItem icon={<DriveEtaIcon/>}>Vehucles</MenuItem>
+            <MenuItem icon={<DevicesOtherIcon />}>Devices</MenuItem>
+            <Submenu icon={<SimCardIcon/>} title="SIMs">
               <MenuItem>Telcel</MenuItem>
               <MenuItem>ATT</MenuItem>
             </Submenu>
           </Submenu>
+          <MenuItem icon={<WaterfallChartIcon />}>Metrics</MenuItem>
           <MenuItem
-            icon={<WaterfallChartIcon />}
-          >Metrics</MenuItem>
-          <MenuItem
-            icon={<DatasetLinkedIcon />} 
-            target="_blank" component={Link} link="https://google.com">
+            icon={<DatasetLinkedIcon />}
+            target="_blank"
+            component={Link}
+            link="https://google.com"
+          >
             External Link
           </MenuItem>
         </Menu>
       </Sidebar>
-      {/* Contenido principal */}
-      <Box component="main" sx={{ flexGrow: 1, p: 3, ml: "270px", mt: 8 }}>
+
+      {/* Contenido principal: usa leftMargin */}
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          mt: 8,                   // AppBar ~64px (8 * 8px)
+          ml: leftMargin,          // ⬅️ aquí está el fix
+          transition: "margin-left .2s ease",
+          //border: 1,
+        }}
+      >
         <AppRoutes />
       </Box>
-      </>
+    </>
   );
 }
 
 export default function App() {
   return (
     <BrowserRouter>
-      <AppLayout />
+      <SidebarProvider
+        defaultOpen={true}
+        width="270px"
+        collapsewidth="80px"
+        textColor="#2b2b2b"
+        themeColor="#5d87ff"
+      >
+        <AppLayout />
+      </SidebarProvider>
     </BrowserRouter>
   );
 }

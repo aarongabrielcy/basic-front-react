@@ -9,7 +9,7 @@ import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import { SidebarContext } from "./Sidebar";
+import { SidebarContext } from "../context/SidebarContext";
 import CircleOutlined from "@mui/icons-material/CircleOutlined";
 
 type SubmenuProps = {

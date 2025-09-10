@@ -2,7 +2,7 @@ import * as React from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { SidebarContext } from "./Sidebar";
+import { SidebarContext } from "../context/SidebarContext";
 import Links from "./Links";
 
 type LogoProps = {
